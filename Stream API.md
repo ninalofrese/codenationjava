@@ -1,6 +1,8 @@
 # Stream API
 
-A Stream API é uma funcionalidade do Java 8 para manipular coleções de uma maneira mais simples e eficiente.
+A Stream API é uma funcionalidade do Java 8 para manipular coleções de uma maneira mais simples e eficiente, sem precisar passar for e criar listas temporárias só para mover dados.
+
+> O stream não herda dados, apenas realiza operações. Para obter uma nova coleção, utiliza os Collectors.
 
 Streams são sequências de elementos que podem ser obtidos de uma collection. Maps tem uma estrutura diferente, com um mapeamento de chaves para valores, sem sequências. Isso não significa que não podemos converter um Map em diferentes sequências com a Streams API.
 
@@ -69,6 +71,40 @@ public List<Long> buscarTimes() {
                 .sorted()
                 .collect(Collectors.toList());
     }
+```
+
+Mais exemplos:
+
+```java
+//recebe um array de inteiros e retorna a MÉDIA dos seus valores. A média pode ser obtida por (soma / quantidade = média)
+public static int average(int[] elements) {
+  //cria um Stream do array, usa o método de organização das médias e pega esse valor como double para o cálculo, mas retorna como int (como esperado)
+  return new Double(IntStream.of(elements).average().getAsDouble()).intValue();
+}
+
+//recebe um array de inteiros e retorna um inteiro contendo o valor da moda do conjunto. A moda é representada pelo valor que mais se repete no conjunto
+public static int mode(int[] elements) {
+  //a repetição vai pegar os valores do elemento e agrupá-los em um Map com o número, vezes que repete
+  Map<Integer, Long> repeticao = IntStream.of(elements).boxed()
+    .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+  //agora essa repetição pegará o número máximo (maior) e mostrará qual número teve esse número maior
+  return frequencias.entrySet().stream()
+    .max(Comparator.comparingLong(Map.Entry::getValue))
+    .map(Map.Entry::getKey).get();
+}
+
+//recebe um array de inteiros e retorna um valor inteiro contendo a mediana do conjunto. A mediana é obtida ordenando os valores no array e pegando o valor que se encontra no meio do mesmo. Para arrays com quantidade par de elementos, não haverá um único valor no meio, nesse caso a mediana será definida como a média entre os dois valores do meio do array.
+public static int median(int[] elements) {
+  //se a lista é ímpar ele divide a lista em dois, e ignora os primeiros elementos resultado da divisão, para pegar o primeiro elemento após
+  if (elements.length % 2 == 1) {
+    return IntStream.of(elements).sorted()
+      .skip(elements.length / 2).findFirst().getAsInt();
+  } else {
+    //se a lista é par, ele divide a lista e -1 item, assim ele pode calcular a média desses dois números subsequentes.
+    return new Double(IntStream.of(elements).sorted()
+                      .skip(elements.length / 2 - 1).limit(2).average().getAsDouble()).intValue();
+  }
+}
 ```
 
 
