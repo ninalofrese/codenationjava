@@ -1,10 +1,19 @@
 # Stream API
 
-A Stream API é uma funcionalidade do Java 8 para manipular coleções de uma maneira mais simples e eficiente, sem precisar passar for e criar listas temporárias só para mover dados.
+A Stream API é uma funcionalidade do Java 8 para manipular coleções de uma maneira mais simples e eficiente, sem precisar passar `for` e criar listas temporárias só para mover dados.
 
-> O stream não herda dados, apenas realiza operações. Para obter uma nova coleção, utiliza os Collectors.
+> O stream não herda dados, apenas realiza operações. Para obter uma nova coleção, utilize os Collectors.
 
 Streams são sequências de elementos que podem ser obtidos de uma collection. Maps tem uma estrutura diferente, com um mapeamento de chaves para valores, sem sequências. Isso não significa que não podemos converter um Map em diferentes sequências com a Streams API.
+
+> O Stream tem a característica de realizar três operações: filter, map e reduce.
+
+O Stream tem dois tipos de operações, intermediárias e terminais:
+
+- As **intermediárias** são aquelas que retornam um novo Stream para que novas operações intermediárias sejam realizadas de maneira encadeada. Os métodos `filter()` e `mapToInt()` são dois exemplos
+- As **terminais** são operações que juntam os resultados de uma Stream e retornam um valor ou objeto. Depois de invocada uma operação terminal, o mesmo Stream não pode ser alterado por operações intermediárias, nem executar novas operações terminais. Alguns exemplos são: `forEach()`, `sum()`, `min()`, `max()`, `findFirst()`, etc. Uma maneira de identificar uma operação terminal é observar o retorno dos métodos: **uma operação terminal nunca retorna uma interface Stream**.
+
+
 
 ```java
 //Temos um HashMap com chave do tipo Long e valor do tipo Player
@@ -123,3 +132,4 @@ https://www.baeldung.com/java-maps-streams
 - [Java 8 Streams Tutorial](https://www.youtube.com/watch?v=t1-YZ6bF-g0)
 - [Playlist mais completa, em inglês](https://www.youtube.com/watch?v=vHwToYEYvsU&list=PLTyWtrsGknYdqY_7lwcbJ1z4bvc5yEEZl)
 - [Streams: Beyond the Basics](https://www.youtube.com/watch?v=TCJdc9SYwlQ)
+- [Entendendo a Stream API do Java8](http://www.matera.com/blog/post/entendendo-a-stream-api-do-java-8)
